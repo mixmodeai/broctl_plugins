@@ -8,7 +8,8 @@ The Snapshot Plugin allows BroControl to take an immediate snapshot of the runni
 * Copy "snapshot.py" to ${BroBase}/lib/broctl/plugins/snapshot.py
 
 ### Broctl Options
-~~~snapshot.list [-v]               - List Available Snapshots
+~~~
+snapshot.list [-v]               - List Available Snapshots
   snapshot.remove <identifier>     - Remove the Snapshot of the Bro Configuration Specified by Identifier
   snapshot.revert <identifier>     - Revert the Bro Configuration to the Identifier Specified
   snapshot.revertfile <path>       - Revert a Snapshot-formatted File
