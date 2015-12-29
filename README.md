@@ -26,7 +26,6 @@ snapshot.exclude | Space separated list of paths or files to explicitly exclude 
 ### Note
 * "broctl snapshot.take" without an identifier option will result in a timestamp being used as the identifier
 * Bro will have to be restarted for any configuration changes to be applied
- - broctl install
  - broctl deploy
 
 # License
