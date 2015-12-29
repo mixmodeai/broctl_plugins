@@ -153,6 +153,7 @@ class SnapshotBro(BroControl.plugin.Plugin):
                 self.__snapshotstate_set(t_state)
 
     def _handle_list(self, args):
+        ret = []
         t_state = self.__snapshotstate_get()
         if t_state:
             t_state_sorted = sorted(t_state, key=lambda k: k['ts'])
@@ -165,8 +166,11 @@ class SnapshotBro(BroControl.plugin.Plugin):
                 print '{0:32s} {1:30s}'.format('IDENTIFIER', 'TIMESTAMP')
                 for t in t_state_sorted:
                     print '{0:32s} {1:30s}'.format(t['id'], t['ts'])
+            ret = t_state_sorted
+        return ret
 
     def _handle_take(self, args):
+        ret = True
         t_list = self.__string_to_list(self.snapshot_option)
 
         if t_list:
@@ -182,25 +186,37 @@ class SnapshotBro(BroControl.plugin.Plugin):
             self.__snapshotstate_insert(t_id, t_file, ts)
         else:
             print 'snapshot.option is not configured in broctl.cfg'
+            ret = False
+        return ret
 
     def _handle_revert(self, args):
+        ret = False
         if len(args) > 0:
             t_s = self.__snapshotstate_find(args)
 
             if len(t_s) > 0:
                 self.__extract_tarfile(os.path.sep.join([self.snapshot_dest, t_s[0]['file']]))
+                ret = True
             else:
                 print 'Cannot find snapshot for identifier "{0}"'.format(args)
+                ret = False
+        return ret
 
     def _handle_revertfile(self, args):
+        ret = False
         if len(args) > 0:
             if os.path.exists(args):
                 self.__extract_tarfile(self, name, basedir='/')
+                ret = True
+        return ret
 
     def _handle_remove(self, args):
+        ret = False
         t_state = self.__snapshotstate_get()
         if t_state and len(args) > 0:
-                self.__snapshotstate_remove(args)
+            self.__snapshotstate_remove(args)
+            ret = True
+        return ret
 
     def cmd_custom(self, cmd, args, cmdout):
         valid_cmds = {'list':       self._handle_list,
@@ -213,4 +229,4 @@ class SnapshotBro(BroControl.plugin.Plugin):
         assert(vc != None) # Can't be anything else.
 
         # Run the handler here
-        vc(args)
+        return vc(args)
