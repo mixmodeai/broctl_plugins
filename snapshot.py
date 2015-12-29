@@ -200,7 +200,7 @@ class SnapshotBro(BroControl.plugin.Plugin):
     def _handle_remove(self, args):
         t_state = self.__snapshotstate_get()
         if t_state and len(args) > 0:
-                self.__snapshotstate_remove(args)
+            self.__snapshotstate_remove(args)
 
     def cmd_custom(self, cmd, args, cmdout):
         valid_cmds = {'list':       self._handle_list,
