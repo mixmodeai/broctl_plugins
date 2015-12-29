@@ -62,7 +62,7 @@ class SnapshotBro(BroControl.plugin.Plugin):
                ("take",       "[<identifier>]", "Take a Snapshot of the Current Bro Configuration"),
                ("revert",     "<identifier>",   "Revert the Bro Configuration to the Identifier Specified"),
                ("revertfile", "<path>",         "Revert a Snapshot-formatted File"),
-               ("remove",     "<identifier>",   "Remove the Snapshot of the Bro Configuration Specified by Identifier") ]
+               ("remove",     "<identifier>",   "Remove the Snapshot of the Bro Configuration Specified by Identifier")]
         return ret
 
     def options(self):
@@ -82,7 +82,7 @@ class SnapshotBro(BroControl.plugin.Plugin):
     def __create_tarfile(self, destdir, name, args):
         tar = tarfile.open(os.path.sep.join([destdir, name]), "w:bz2")
         for name in args:
-            tar.add(name, exclude=lambda x: any(ex in x for ex in self.__snapshotexclude_to_list()))
+            tar.add(name, exclude=lambda x: any(ex in x for ex in self.__string_to_list(self.snapshot_exclude)))
         tar.close()
 
     def __extract_tarfile(self, name, basedir='/'):
@@ -90,16 +90,10 @@ class SnapshotBro(BroControl.plugin.Plugin):
         tar.extractall(path=basedir)
         tar.close()
 
-    def __snapshotexclude_to_list(self):
+    def __string_to_list(self, sp_sep_list):
         ret = []
-        if len(self.snapshot_exclude) > 0:
-            ret = [str(i) for i in self.snapshot_exclude.split()]
-        return ret
-
-    def __snapshotoption_to_list(self):
-        ret = []
-        if len(self.snapshot_option) > 0:
-            ret = [str(i) for i in self.snapshot_option.split()]
+        if len(sp_sep_list) > 0:
+            ret = [str(i) for i in sp_sep_list.split()]
         return ret
 
     def __gen_snapshot_entry(self, state_id, value, ts):
@@ -112,9 +106,8 @@ class SnapshotBro(BroControl.plugin.Plugin):
         return ret
 
     def __snapshotstate_set(self, state):
-        if state:
-            self.snapshotstate = json.dumps(state)
-            self.setState('snapshotstate', self.snapshotstate)
+        self.snapshotstate = json.dumps(state)
+        self.setState('snapshotstate', self.snapshotstate)
 
     def __snapshotstate_entry_id_exist(self, state, identifier):
         ret = False
@@ -174,7 +167,7 @@ class SnapshotBro(BroControl.plugin.Plugin):
                     print '{0:32s} {1:30s}'.format(t['id'], t['ts'])
 
     def _handle_take(self, args):
-        t_list = self.__snapshotoption_to_list()
+        t_list = self.__string_to_list(self.snapshot_option)
 
         if t_list:
             ts = str(datetime.datetime.utcnow())
@@ -207,7 +200,7 @@ class SnapshotBro(BroControl.plugin.Plugin):
     def _handle_remove(self, args):
         t_state = self.__snapshotstate_get()
         if t_state and len(args) > 0:
-                self.__snapshotstate_remove(args) 
+                self.__snapshotstate_remove(args)
 
     def cmd_custom(self, cmd, args, cmdout):
         valid_cmds = {'list':       self._handle_list,
