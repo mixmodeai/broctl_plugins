@@ -10,10 +10,10 @@ The Snapshot Plugin allows BroControl to take an immediate snapshot of the runni
 ### Broctl Options
 ~~~
 snapshot.list [-v]               - List Available Snapshots
-  snapshot.remove <identifier>     - Remove the Snapshot of the Bro Configuration Specified by Identifier
-  snapshot.revert <identifier>     - Revert the Bro Configuration to the Identifier Specified
-  snapshot.revertfile <path>       - Revert a Snapshot-formatted File
-  snapshot.take [<identifier>]     - Take a Snapshot of the Current Bro Configuration
+snapshot.remove <identifier>     - Remove the Snapshot of the Bro Configuration Specified by Identifier
+snapshot.revert <identifier>     - Revert the Bro Configuration to the Identifier Specified
+snapshot.revertfile <path>       - Revert a Snapshot-formatted File
+snapshot.take [<identifier>]     - Take a Snapshot of the Current Bro Configuration
 ~~~
 
 ### broctl.cfg Options
