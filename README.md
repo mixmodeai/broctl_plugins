@@ -20,7 +20,7 @@ snapshot.take [<identifier>]     - Take a Snapshot of the Current Bro Configurat
 Option  | Usage   | Example
 ------- | ------- | -------
 snapshot.option | Space separated list of paths or files to explicitly backup | snapshot.option = /usr/local/bro/lib/bro/plugins /usr/local/bro/etc /usr/local/bro/share/bro
-snapshot.dest | Full path to write the backup file (${BroBase}/snapshots is the default} | snapshot.dest = /data/snapshots
+snapshot.dest | Full path to write the backup file (${BroBase}/snapshots is the default) | snapshot.dest = /data/snapshots
 snapshot.exclude | Space separated list of paths or files to explicitly exclude from the snapshot | snapshot.exclude = broctl
 
 ### Note
